@@ -69,7 +69,6 @@ const pesertaSchema = new Schema({
     },
     mediaSosial: {
         type: String,
-
     },
     bootCamp: {
         type: String
