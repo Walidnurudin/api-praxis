@@ -31,10 +31,9 @@ const login = async (req, res) => {
 
     try {
         const user = await User.login(email, password);
-        const token = await createToken(user._id);
+        const token = createToken(user._id);
 
-        res.status(200).json({token});
-        console.log(user, token)
+        res.status(200).json({token, username: user.username});
     } catch (err) {
         const errors = handleError(err);
         res.status(400).json({errors});
@@ -46,7 +45,7 @@ const registrasi = async (req, res) => {
 
     try {
         const user = await User.create({username, email, password});
-        res.status(200).json({user});
+        res.status(200).json({user: user.username, status: "Sukses mendaftar"});
     }catch(err){
         res.status(400).json(err);
     }
@@ -57,17 +56,26 @@ const pesertaPost = (req, res) => {
 
     siswa.save()
         .then(result => {
-            console.log('benar', result);
             res.send(result)
         })
         .catch(err => {
-            console.log('salah', err)
+            res.send(err)
+        })
+}
+
+const pesertaGet = (req, res) => {
+    Peserta.find()
+        .then(result => {
+            res.send(result)
+        })
+        .catch(err => {
             res.send(err)
         })
 }
 
 module.exports = {
     pesertaPost,
+    pesertaGet,
     registrasi,
     login
 }
