@@ -26,6 +26,21 @@ const handleError = (err) => {
 }
 
 // action
+const login = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const user = await User.login(email, password);
+        const token = await createToken(user._id);
+
+        res.status(200).json({token});
+        console.log(user, token)
+    } catch (err) {
+        const errors = handleError(err);
+        res.status(400).json({errors});
+    }
+}
+
 const registrasi = async (req, res) => {
     const {username, email, password} = req.body;
 
@@ -53,5 +68,6 @@ const pesertaPost = (req, res) => {
 
 module.exports = {
     pesertaPost,
-    registrasi
+    registrasi,
+    login
 }
