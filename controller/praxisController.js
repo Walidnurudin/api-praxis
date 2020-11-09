@@ -113,7 +113,25 @@ const pesertaGet = (req, res) => {
         } else {
             Peserta.find()
                 .then(result => {
-                    res.send({ result, data })
+                    res.send({ result })
+                })
+                .catch(err => {
+                    res.send(err)
+                })
+        }
+    })
+}
+
+const pesertaDetail = (req, res) => {
+    const id = req.params.id;
+
+    jwt.verify(req.token, 'praxis', (err, data) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            Peserta.findById(id)
+                .then(result => {
+                    res.send({ result })
                 })
                 .catch(err => {
                     res.send(err)
@@ -127,6 +145,7 @@ module.exports = {
     verifyToken, // verify token
     pesertaPost,
     pesertaGet,
+    pesertaDetail,
     pesertaDelete,
     registrasi,
     login
