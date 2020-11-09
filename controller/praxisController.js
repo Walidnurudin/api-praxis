@@ -2,9 +2,35 @@ const Peserta = require('../model/pesertaModel');
 const User = require('../model/userModel');
 const jwt = require('jsonwebtoken');
 
+
+// FORMAT OF TOKEN
+// Authorization: Bearer <bearer_token>
+
+// verify token
+const verifyToken = function (req, res, next) {
+    // get auth headers value
+    const bearerHeaders = req.headers.authorization;
+    console.log('middleware ', typeof bearerHeaders)
+    // check if bearer is undefined
+    if (typeof bearerHeaders !== 'undefined') {
+        // split token from array
+        const bearer = bearerHeaders.split(' ');
+        // get token from array
+        console.log(bearer)
+        const bearerToken = bearer[1];
+        // set the token
+        req.token = bearerToken;
+        // next middleware
+        next();
+    } else {
+        // forbidden
+        res.sendStatus(403);
+    }
+}
+
 // create token
 const createToken = (id) => {
-    return jwt.sign({id}, 'praxis');
+    return jwt.sign({ id }, 'praxis');
 }
 
 // handle error
@@ -13,12 +39,12 @@ const handleError = (err) => {
     let errors = { email: '', password: '' };
 
     // incorrect email
-    if(err.message === "incorrect email!"){
+    if (err.message === "incorrect email!") {
         errors.email = 'that email is not registered';
     }
 
     // incorrect password
-    if(err.message === 'incorrect password!'){
+    if (err.message === 'incorrect password!') {
         errors.password = 'that password is incorrect';
     }
 
@@ -33,20 +59,20 @@ const login = async (req, res) => {
         const user = await User.login(email, password);
         const token = createToken(user._id);
 
-        res.status(200).json({token, username: user.username});
+        res.status(200).json({ token, username: user.username });
     } catch (err) {
         const errors = handleError(err);
-        res.status(400).json({errors});
+        res.status(400).json({ errors });
     }
 }
 
 const registrasi = async (req, res) => {
-    const {username, email, password} = req.body;
+    const { username, email, password } = req.body;
 
     try {
-        const user = await User.create({username, email, password});
-        res.status(200).json({user: user.username, status: "Sukses mendaftar"});
-    }catch(err){
+        const user = await User.create({ username, email, password });
+        res.status(200).json({ user: user.username, status: "Sukses mendaftar" });
+    } catch (err) {
         res.status(400).json(err);
     }
 }
@@ -63,19 +89,45 @@ const pesertaPost = (req, res) => {
         })
 }
 
+const pesertaDelete = (req, res) => {
+    const id = req.params.id;
+
+    jwt.verify(req.token, 'praxis', async (err, data) => {
+        if(err){
+            console.log(err);
+        }else{
+            try {
+                const result = await Peserta.findByIdAndDelete(id);
+                res.send({message: "Berhasil menghapus"})
+            }catch(err){
+                res.send({err})
+            }
+        }
+    })
+}
+
 const pesertaGet = (req, res) => {
-    Peserta.find()
-        .then(result => {
-            res.send(result)
-        })
-        .catch(err => {
-            res.send(err)
-        })
+    jwt.verify(req.token, 'praxis', (err, data) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+            Peserta.find()
+                .then(result => {
+                    res.send({ result, data })
+                })
+                .catch(err => {
+                    res.send(err)
+                })
+        }
+    })
+
 }
 
 module.exports = {
+    verifyToken, // verify token
     pesertaPost,
     pesertaGet,
+    pesertaDelete,
     registrasi,
     login
 }
