@@ -77,6 +77,38 @@ const registrasi = async (req, res) => {
     }
 }
 
+const usersGet = (req, res) => {
+    jwt.verify(req.token, 'praxis', async (err) => {
+        if(err){
+            res.send({meassage: "please verify", err})
+        }else{
+            try {
+                const result = await User.find();
+                res.send(result)
+            } catch(err){
+                res.send({message: "error"})
+            }
+        }
+    })
+}
+
+const usersDetail = (req, res) => {
+    const id = req.params.id;
+
+    jwt.verify(req.token, 'praxis', async (err) => {
+        if(err){
+            res.send({meassage: "please verify", err})
+        }else{
+            try {
+                const result = await User.findById(id);
+                res.send(result)
+            } catch(err){
+                res.send({message: "error"})
+            }
+        }
+    })
+}
+
 const pesertaPost = (req, res) => {
     const siswa = new Peserta(req.body);
 
@@ -148,5 +180,7 @@ module.exports = {
     pesertaDetail,
     pesertaDelete,
     registrasi,
-    login
+    login,
+    usersGet,
+    usersDetail
 }
