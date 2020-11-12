@@ -53,7 +53,7 @@ const handleError = (err) => {
 
 // action
 const Home = async (req, res) => {
-    res.send("Selamat datang di API - Praxis academy")
+    res.render("index")
 }
 
 const login = async (req, res) => {
