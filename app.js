@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const favicon = require('serve-favicon');
 const route = require('./routes/praxisRouter');
 var cors = require('cors');
 const port = 3000;
@@ -13,12 +14,12 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(res => app.listen(port, () => console.log(`port berjalan di http://localhost:${port}`)))
     .catch(err => console.log(err))
 
-
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(cors())
 app.use(bodyParser.urlencoded({
     limit: '5mb',
     parameterLimit: 100000,
-    extended: true 
+    extended: true
 }));
 
 app.use(bodyParser.json({
