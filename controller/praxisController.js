@@ -52,10 +52,6 @@ const handleError = (err) => {
 }
 
 // action
-const home = async (req, res) => {
-    res.send("Selamat datang di API praxis academy")
-}
-
 const login = async (req, res) => {
     const { email, password } = req.body;
 
