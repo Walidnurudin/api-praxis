@@ -13,10 +13,18 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(res => app.listen(port, () => console.log(`port berjalan di http://localhost:${port}`)))
     .catch(err => console.log(err))
 
-app.use(bodyParser.json());
+
 app.use(cors())
+app.use(bodyParser.urlencoded({
+    limit: '5mb',
+    parameterLimit: 100000,
+    extended: false 
+}));
+
+app.use(bodyParser.json({
+    limit: '5mb'
+}));
 //support parsing of application/x-www-form-urlencoded post data
-app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'));
 

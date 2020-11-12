@@ -74,11 +74,9 @@ const pesertaSchema = new Schema({
     bootCamp: {
         type: String
     },
-    uploadedFileResponses: {
-        type: String
-    },
     uploadedFiles: {
-        type: String
+        type: String,
+        require: true
     },
 })
 
