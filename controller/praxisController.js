@@ -174,7 +174,6 @@ const pesertaDetail = (req, res) => {
 }
 
 module.exports = {
-    home,
     verifyToken, // verify token
     pesertaPost,
     pesertaGet,
