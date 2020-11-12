@@ -29,7 +29,4 @@ app.use(bodyParser.json({
 app.use(morgan('dev'));
 
 // router
-app.get('/', (req, res) => {
-    res.send("Selamat datang di API praxis academy")
-})
 app.use(route);

@@ -52,6 +52,10 @@ const handleError = (err) => {
 }
 
 // action
+const Home = async (req, res) => {
+    res.send("Selamat datang di API - Praxis academy")
+}
+
 const login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -174,6 +178,7 @@ const pesertaDetail = (req, res) => {
 }
 
 module.exports = {
+    Home,
     verifyToken, // verify token
     pesertaPost,
     pesertaGet,
