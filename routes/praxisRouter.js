@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const praxisController = require('../controller/praxisController');
 
+router.get('/', praxisController.home)
+
 // PESERTA
 router.post('/api/peserta/post', praxisController.pesertaPost);
 router.delete('/api/peserta/:id/delete', praxisController.verifyToken, praxisController.pesertaDelete);

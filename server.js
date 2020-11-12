@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const route = require('./routes/praxisRouter');
 var cors = require('cors');
 const port = 3000;
-const dbURI = 'mongodb://walid:27017/praxis';
+const dbURI = 'mongodb+srv://walid:walid@cluster0.vt15h.mongodb.net/praxis?retryWrites=true&w=majority';
 
 const app = express();
 
@@ -18,7 +18,7 @@ app.use(cors())
 app.use(bodyParser.urlencoded({
     limit: '5mb',
     parameterLimit: 100000,
-    extended: false 
+    extended: true 
 }));
 
 app.use(bodyParser.json({
