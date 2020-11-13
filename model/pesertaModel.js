@@ -72,7 +72,7 @@ const pesertaSchema = new Schema({
         require: true
     },
     bootCamp: {
-        type: String
+        type: Array
     },
     uploadedFiles: {
         type: String,
