@@ -6,7 +6,7 @@ const favicon = require('serve-favicon');
 const path = require('path')
 const route = require('./routes/praxisRouter');
 var cors = require('cors');
-const port = 3000;
+const port = process.env.PORT || 3000;
 const dbURI = 'mongodb+srv://walid:walid@cluster0.vt15h.mongodb.net/praxis?retryWrites=true&w=majority';
 
 const app = express();
